@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 225" width="400" height="225" fill="none">
+  <rect width="400" height="225" rx="12" fill="#18181b"/>
+  <rect x="1" y="1" width="398" height="223" rx="11" stroke="#27272a" stroke-width="2"/>
+  <circle cx="36" cy="30" r="5" fill="#ef4444"/>
+  <circle cx="52" cy="30" r="5" fill="#eab308"/>
+  <circle cx="68" cy="30" r="5" fill="#22c55e"/>
+  <line x1="20" y1="50" x2="380" y2="50" stroke="#27272a" stroke-width="1.5"/>
+  <!-- Distributed Architecture & Systems -->
+  <rect x="50" y="75" width="80" height="45" rx="6" fill="#09090b" stroke="#ef4444" stroke-width="2"/>
+  <text x="90" y="102" fill="#fafafa" font-family="monospace" font-size="11" font-weight="bold" text-anchor="middle">CLIENT</text>
+  <rect x="160" y="75" width="80" height="45" rx="6" fill="#09090b" stroke="#3f3f46" stroke-width="2"/>
+  <text x="200" y="102" fill="#fafafa" font-family="monospace" font-size="11" font-weight="bold" text-anchor="middle">LOAD BAL</text>
+  <rect x="270" y="75" width="80" height="45" rx="6" fill="#09090b" stroke="#3f3f46" stroke-width="2"/>
+  <text x="310" y="102" fill="#fafafa" font-family="monospace" font-size="11" font-weight="bold" text-anchor="middle">MICRO-SVC</text>
+  
+  <line x1="130" y1="97" x2="160" y2="97" stroke="#ef4444" stroke-width="2" stroke-dasharray="3,3"/>
+  <line x1="240" y1="97" x2="270" y2="97" stroke="#ef4444" stroke-width="2" stroke-dasharray="3,3"/>
+
+  <!-- Lower level pipeline -->
+  <rect x="105" y="150" width="80" height="45" rx="6" fill="#09090b" stroke="#3f3f46" stroke-width="1.5"/>
+  <text x="145" y="177" fill="#a1a1aa" font-family="monospace" font-size="10" font-weight="bold" text-anchor="middle">DATABASE</text>
+  <rect x="215" y="150" width="80" height="45" rx="6" fill="#09090b" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="255" y="177" fill="#fafafa" font-family="monospace" font-size="10" font-weight="bold" text-anchor="middle">CACHE / K8s</text>
+
+  <path d="M200 120 L200 135 L145 135 L145 150" stroke="#71717a" stroke-width="1.5"/>
+  <path d="M200 120 L200 135 L255 135 L255 150" stroke="#ef4444" stroke-width="1.5"/>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" fill="none">
+  <!-- Rounded Base Background -->
+  <rect width="48" height="48" rx="12" fill="#18181b"/>
+  <rect x="1" y="1" width="46" height="46" rx="11" stroke="#27272a" stroke-width="1.5"/>
+  <!-- Folded Modern File Stack -->
+  <path d="M14 12C14 10.8954 14.8954 10 16 10H26.5858C27.1163 10 27.6251 10.2107 28 10.5858L33.4142 16C33.7893 16.3749 34 16.8837 34 17.4142V34C34 35.1046 33.1046 36 32 36H16C14.8954 36 14 35.1046 14 34V12Z" fill="#09090b" stroke="#ef4444" stroke-width="2"/>
+  <path d="M26 10V16C26 16.5523 26.4477 17 27 17H33" stroke="#ef4444" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Central Digital Hub Matrix Lines (representing 'F' and connectivity) -->
+  <line x1="19" y1="21" x2="29" y2="21" stroke="#fafafa" stroke-width="2" stroke-linecap="round"/>
+  <line x1="19" y1="26" x2="26" y2="26" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="28.5" cy="26" r="1.5" fill="#ef4444"/>
+  <line x1="19" y1="31" x2="23" y2="31" stroke="#a1a1aa" stroke-width="2" stroke-linecap="round"/>
+</svg>

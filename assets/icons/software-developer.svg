@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 225" width="400" height="225" fill="none">
+  <rect width="400" height="225" rx="12" fill="#18181b"/>
+  <rect x="1" y="1" width="398" height="223" rx="11" stroke="#27272a" stroke-width="2"/>
+  <circle cx="36" cy="30" r="5" fill="#ef4444"/>
+  <circle cx="52" cy="30" r="5" fill="#eab308"/>
+  <circle cx="68" cy="30" r="5" fill="#22c55e"/>
+  <line x1="20" y1="50" x2="380" y2="50" stroke="#27272a" stroke-width="1.5"/>
+  <!-- Code Editor Window -->
+  <rect x="36" y="70" width="180" height="12" rx="3" fill="#3f3f46"/>
+  <rect x="36" y="92" width="120" height="10" rx="3" fill="#71717a"/>
+  <rect x="164" y="92" width="60" height="10" rx="3" fill="#ef4444" fill-opacity="0.8"/>
+  <rect x="36" y="112" width="210" height="10" rx="3" fill="#52525b"/>
+  <rect x="56" y="132" width="140" height="10" rx="3" fill="#71717a"/>
+  <rect x="56" y="152" width="90" height="10" rx="3" fill="#ef4444" fill-opacity="0.8"/>
+  <rect x="36" y="172" width="70" height="10" rx="3" fill="#3f3f46"/>
+  <!-- App logic & terminal -->
+  <rect x="250" y="70" width="120" height="120" rx="8" fill="#09090b" stroke="#3f3f46" stroke-width="1.5"/>
+  <path d="M265 95 L278 105 L265 115" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="285" y1="115" x2="305" y2="115" stroke="#a1a1aa" stroke-width="2.5" stroke-linecap="round"/>
+  <rect x="265" y="135" width="90" height="6" rx="2" fill="#27272a"/>
+  <rect x="265" y="148" width="75" height="6" rx="2" fill="#27272a"/>
+  <rect x="265" y="161" width="60" height="6" rx="2" fill="#22c55e"/>
+</svg>

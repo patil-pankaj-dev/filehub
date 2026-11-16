@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Management Dashboard — File hub</title>
+  <meta name="description" content="File hub administrator control center. Upload, modify, and delete Assignments and Previous Year Question Papers (PYQs)." />
+  <link rel="icon" href="assets/icons/logo.svg" type="image/svg+xml" />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/shadcn-components.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <style>
+    .dash-hero {
+      padding: 2.25rem 0 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      background-color: var(--bg-card);
+    }
+    .user-badge-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1.25rem;
+      padding: 0.875rem 1.25rem;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+    }
+    @media (max-width: 640px) {
+      .user-badge-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+        padding: 1rem;
+      }
+    }
+    .tab-nav {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--border-color);
+      margin-top: 1.75rem;
+      padding-bottom: 0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      white-space: nowrap;
+    }
+    .tab-nav::-webkit-scrollbar {
+      display: none;
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-family: var(--font-heading);
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 0.75rem 1.25rem;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-shrink: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .tab-btn:hover {
+      color: var(--text-primary);
+    }
+    .tab-btn.active {
+      color: var(--text-primary);
+      border-bottom-color: var(--btn-accent-bg);
+    }
+    .tab-content {
+      display: none;
+      padding-top: 1.5rem;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .search-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+    @media (max-width: 640px) {
+      .search-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+      }
+      .search-row > div {
+        max-width: 100% !important;
+        width: 100%;
+      }
+      .search-row select,
+      .search-row button {
+        width: 100% !important;
+      }
+    }
+    .table-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+    }
+    .btn-icon {
+      padding: 0.4rem 0.65rem;
+      font-size: 0.75rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+      border-radius: var(--radius-sm);
+      min-height: 36px;
+    }
+    .btn-delete {
+      background-color: rgba(220, 38, 38, 0.12);
+      color: #ef4444;
+      border: 1px solid rgba(220, 38, 38, 0.3);
+    }
+    .btn-delete:hover {
+      background-color: #dc2626;
+      color: #ffffff;
+    }
+    .btn-edit {
+      background-color: var(--bg-elevated);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+    }
+    .btn-edit:hover {
+      border-color: var(--border-strong);
+      background-color: var(--bg-subtle);
+    }
+  </style>
+</head>
+<body>
+  <!-- Responsive Site Header -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo" aria-label="File hub Homepage">
+        <img src="assets/icons/logo.svg" alt="File hub Logo" width="34" height="34" class="brand-logo-img" />
+        <span>File hub</span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="desktop-nav" aria-label="Main Navigation">
+        <a href="index.html" class="desktop-nav-link">Home</a>
+        <a href="assignment.html" class="desktop-nav-link">Assignments</a>
+        <a href="pyqs.html" class="desktop-nav-link">PYQ's</a>
+        <a href="dashboard.html" class="desktop-nav-link active">Dashboard</a>
+      </nav>
+
+      <!-- Header Actions -->
+      <div class="header-actions">
+        <button type="button" class="header-theme-toggle" id="header-theme-btn" aria-label="Switch Theme">
+          <svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+
+        <a href="index.html" class="btn btn-outline" style="font-size: 0.8125rem; padding: 0.35rem 0.875rem; min-height: 38px;">
+          View Site
+        </a>
+        <button type="button" id="header-logout-btn" class="btn btn-accent" style="font-size: 0.8125rem; padding: 0.35rem 0.875rem; min-height: 38px;">
+          Sign Out
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main style="min-height: calc(100vh - 160px); min-height: calc(100dvh - 160px); padding-bottom: 5rem;">
+    <!-- Dashboard Hero -->
+    <section class="dash-hero">
+      <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <div class="hero-pill">
+              <span class="hero-pill-dot"></span>
+              <span>Logged In • Authorized Session</span>
+            </div>
+            <h1 style="font-size: clamp(1.65rem, 4vw, 2rem); margin-top: 0.5rem; margin-bottom: 0.25rem;">Admin Management Console</h1>
+            <p style="color: var(--text-secondary); font-size: 0.95rem; max-width: 42rem;">
+              Full control to upload, modify, view, download, and delete Assignments &amp; PYQ examination papers.
+            </p>
+          </div>
+        </div>
+
+        <div class="user-badge-bar">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--btn-accent-bg); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-family: var(--font-heading); flex-shrink: 0;" id="dash-avatar">
+              PP
+            </div>
+            <div>
+              <div style="font-weight: 700; font-size: 0.95rem;" id="dash-user-name">Pankaj Patil</div>
+              <div style="font-size: 0.8125rem; color: var(--text-muted); word-break: break-all;" id="dash-user-email">patilpankaj221134@gmail.com</div>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+            <span class="badge" id="dash-role-badge">Super Admin (Primary)</span>
+            <span class="badge badge-muted">Firebase Auth Active</span>
+          </div>
+        </div>
+
+        <!-- Tab Switcher -->
+        <div class="tab-nav">
+          <button type="button" class="tab-btn active" id="tab-btn-asg" onclick="switchTab('asg')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+            </svg>
+            <span>Assignments</span>
+            <span class="badge" id="asg-count-badge">0</span>
+          </button>
+
+          <button type="button" class="tab-btn" id="tab-btn-pyq" onclick="switchTab('pyq')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+              <polyline points="10 7 14 11 10 15"></polyline>
+            </svg>
+            <span>PYQ's Papers</span>
+            <span class="badge" id="pyq-count-badge">0</span>
+          </button>
+
+          <button type="button" class="tab-btn" id="tab-btn-admins" onclick="switchTab('admins')" style="display: none;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            <span>Admin Management</span>
+            <span class="badge" id="admins-count-badge">1</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <div class="container">
+      <!-- Tab 1: Assignments Management -->
+      <section id="tab-asg" class="tab-content active">
+        <div class="search-row">
+          <div style="flex: 1; max-width: 22rem;">
+            <input type="text" id="asg-search" class="input-control" placeholder="Search assignments by title or subject..." />
+          </div>
+          <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+            <select id="asg-sem-filter" class="input-control" style="width: auto; min-width: 140px;">
+              <option value="">All Semesters</option>
+              <option value="1">Semester 1</option>
+              <option value="2">Semester 2</option>
+              <option value="3">Semester 3</option>
+              <option value="4">Semester 4</option>
+              <option value="5">Semester 5</option>
+              <option value="6">Semester 6</option>
+              <option value="7">Semester 7</option>
+              <option value="8">Semester 8</option>
+            </select>
+            <button type="button" class="btn btn-accent" id="open-upload-asg-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              <span>Upload Assignment</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Assignment Title</th>
+                <th>Subject</th>
+                <th>Semester</th>
+                <th>Branch</th>
+                <th>File Size</th>
+                <th>Actions (Modify / Delete)</th>
+              </tr>
+            </thead>
+            <tbody id="asg-table-body">
+              <!-- Rendered via JS with data-label for mobile responsive card adaptation -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Tab 2: PYQ's Management -->
+      <section id="tab-pyq" class="tab-content">
+        <div class="search-row">
+          <div style="flex: 1; max-width: 22rem;">
+            <input type="text" id="pyq-search" class="input-control" placeholder="Search PYQs by subject or title..." />
+          </div>
+          <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+            <select id="pyq-sem-filter" class="input-control" style="width: auto; min-width: 140px;">
+              <option value="">All Semesters</option>
+              <option value="1">Semester 1</option>
+              <option value="2">Semester 2</option>
+              <option value="3">Semester 3</option>
+              <option value="4">Semester 4</option>
+              <option value="5">Semester 5</option>
+              <option value="6">Semester 6</option>
+              <option value="7">Semester 7</option>
+              <option value="8">Semester 8</option>
+            </select>
+            <button type="button" class="btn btn-accent" id="open-upload-pyq-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              <span>Upload PYQ Paper</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Paper Title</th>
+                <th>Subject</th>
+                <th>Semester</th>
+                <th>Exam &amp; Year</th>
+                <th>File Info</th>
+                <th>Actions (Modify / Delete)</th>
+              </tr>
+            </thead>
+            <tbody id="pyq-table-body">
+              <!-- Rendered via JS with data-label for mobile responsive card adaptation -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Tab 3: Admin Management (Restricted Exclusively to patilpankaj221134@gmail.com) -->
+      <section id="tab-admins" class="tab-content">
+        <div style="background: rgba(220, 38, 38, 0.08); border: 1px solid rgba(220, 38, 38, 0.25); border-radius: var(--radius-md); padding: 1.125rem 1.25rem; margin-bottom: 1.25rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <div style="font-weight: 700; color: #f87171; font-size: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              <span>Super Administrator Access Control</span>
+            </div>
+            <div style="font-size: 0.8125rem; color: var(--text-secondary); margin-top: 0.25rem; line-height: 1.4;">
+              Exclusive to <strong>patilpankaj221134@gmail.com</strong>. Add new platform administrators, restrict access, or delete admins. Sub-admins can only upload &amp; manage Assignments and PYQs.
+            </div>
+          </div>
+          <button type="button" class="btn btn-accent" id="open-add-admin-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>Add New Admin</span>
+          </button>
+        </div>
+
+        <div class="search-row" style="margin-top: 0;">
+          <div style="flex: 1; max-width: 22rem;">
+            <input type="text" id="admin-search" class="input-control" placeholder="Search administrators by name or email..." />
+          </div>
+          <div id="admin-total-counter" style="font-size: 0.8125rem; color: var(--text-muted); font-weight: 600;">
+            Showing 1 administrator
+          </div>
+        </div>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Administrator</th>
+                <th>Gmail Address</th>
+                <th>Role &amp; Scope</th>
+                <th>Status</th>
+                <th>Date Added</th>
+                <th>Access Controls (Restrict / Delete)</th>
+              </tr>
+            </thead>
+            <tbody id="admins-table-body">
+              <!-- Rendered via JS with data-label for mobile responsive card adaptation -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- MODAL: Upload Assignment -->
+  <div id="modal-upload-asg" class="dialog-overlay" role="dialog" aria-modal="true">
+    <div class="dialog-container" style="max-width: 32rem;">
+      <div class="dialog-header">
+        <div class="dialog-title-wrap">
+          <h3 class="dialog-title">Upload Assignment</h3>
+          <p class="dialog-subtitle">Add a new verified assignment with questions and solutions.</p>
+        </div>
+        <button class="dialog-close-btn" onclick="closeModal('modal-upload-asg')" aria-label="Close">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <form id="form-upload-asg">
+        <div class="dialog-body" style="gap: 1rem;">
+          <div>
+            <label style="display:block; font-size:0.8125rem; font-weight:600; margin-bottom:0.25rem;">Assignment Title</label>
+            <input type="text" id="asg-up-title" class="input-control" placeholder="e.g. Data Structures Assignment 1 - Trees" required />
+          </div>
+          <div>
+            <label style="display:block; font-size:0.8125rem; font-weight:600; margin-bottom:0.25rem;">Subject Name</label>
+            <input type="text" id="asg-up-subject" class="input-control" placeholder="e.g. Data Structures &amp; Algorithms" required />
+          </div>
+          <div class="form-row-2col">
+            <div>
+              <label style="display:block; font-size:0.8125rem; font-weight:600; margin-bottom:0.25rem;">Semester</label>
+              <select id="asg-up-sem" class="input-control" required>
+                <option value="1">Semester 1</option>
+                <option value="2">Semester 2</option>
+                <option value="3" selected>Semester 3</option>
+                <option value="4">Semester 4</option>
+                <option value="5">Semester 5</option>
+                <option value="6">Semester 6</option>
+                <option value="7">Semester 7</option>
+                <option value="8">Semester 8</option>
+              </select>
+            </div>
+            <div>
+              <label style="display:block; font-size:0.8125rem; font-weight:600; margin-bottom:0.25rem;">Assignment No.</label>
+              <input type="number" id="asg-up-num" class="input-control" value="1" min="1" max="20" required />
+            </div>
+          </div>
+          <div>
+            <label style="display:block; font-size:0.8125rem; font-weight:600; margin-bottom:0.25rem;">Engineering Branch</label>
+            <select id="asg-up-branch" class="input-control" required>
+              <option value="Computer Engineering">Computer Engineering</option>
+              <option value="Information Technology">Information Technology</option>
+              <option value="Electronics & Communication">Electronics &amp; Communication</option>
+              <option value="Mechanical Engineering">Mechanical Engineering</option>
+              <option value="Civil Engineering">Civil Engineering</option>
+              <option value="Electrical Engineering">Electrical Engineering</option>
+            </select>
+          </div>
+          <div>
+            <label style="display:block; font-size:0.8125rem; font-weight:600; margin-bottom:0.25rem;">Attach File (PDF, Word, or Image)</label>
+            <input type="file" id="asg-up-file" class="input-control" accept=".pdf,.doc,.docx,image/*" required style="padding:0.4rem;" />
+          </div>
+        </div>
+        <div class="dialog-footer">
+          <button type="button" class="btn btn-outline" onclick="closeModal('modal-upload-asg')">Cancel</button>
+          <button type="submit" class="btn btn-accent">Upload Assignment</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Modify / Edit Assignment -->
+  <div id="modal-edit-asg" class="dialog-overlay" role="dialog" aria-modal="true">
+    <div class="dialog-container" style="max-width: 32rem;">
+      <div class="dialog-header">
+        <div class="dialog-title-wrap">
+          <h3 class="dialog-title">Modify Assignment</h3>
+          <p class="dialog-subtitle">Update details or replace the attached file for this assignment.</p>
+        </div>
+        <button class="dialog-close-btn" onclick="closeModal('modal-edit-asg')" aria-label="Close">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <form id="form-edit-asg">
+        <input type="hidden" id="edit-asg-id" />
+        <div class="dialog-body" style="gap: 1rem;">
+          <div>
+            <label style="display:block; font-size:0.8125rem; font-weight:600; margin-bottom:0.25rem;">Assignment Title</label>
+            <input type="text" id="edit-asg-title" class="input-control" required />
+          </div>
+          <div>
+            <label style="display:block; font-size:0.8125rem; font-weight:600; margin-bottom:0.25rem;">Subject Name</label>
+            <input type="text" id="edit-asg-subject" class="input-control" required />
+          </div>
+          <div class="form-row-2col">
+            <div>
+              <label style="display:block; font-size:0.8125rem; font-weight:600; margin-bottom:0.25rem;">Semester</label>
+              <select id="edit-asg-sem" class="input-control" required>
+                <option value="1">Semester 1</option>
+                <option value="2">Semester 2</option>
+                <option value="3">Semester 3</option>
+                <option value="4">Semester 4</option>
+                <option value="5">Semester 5</option>
+                <option value="6">Semester 6</option>
+                <option value="7">Semester 7</option>
+                <option value="8">Semester 8</option>
+              </select>
+            </div>
+            <div>
+              <label style="display:block; font-size:0.8125rem; font-weight:600; margin-bottom:0.25rem;">Assignment No.</label>
+              <input type="number" id="edit-asg-num" class="input-control" min="1" max="20" required />
+            </div>
+          </div>
+          <div>
+            <label style="display:block; font-size:0.8125rem; font-weight:600; margin-bottom:0.25rem;">Engineering Branch</label>
+            <select id="edit-asg-branch" class="input-control" required>
+              <option value="Computer Engineering">Computer Engineering</option>
+              <option value="Information Technology">Information Technology</option>
+              <option value="Electronics & Communication">Electronics &amp; Communication</option>
+              <option value="Mechanical Engineering">Mechanical Engineering</option>
+              <option value="Civil Engineering">Civil Engineering</option>
+              <option value="Electrical Engineering">Electrical Engineering</option>
+            </select>
+          </div>
+          <div>
+            <label style="display:block; font-size:0.8125rem; font-weight:600; margin-bottom:0.25rem;">Replace File (Optional — leave empty to keep existing)</label>
+            <input type="file" id="edit-asg-file" class="input-control" accept=".pdf,.doc,.docx,image/*" style="padding:0.4rem;" />
+            <span id="edit-asg-file-current" style="font-size:0.75rem; color:var(--text-muted); display:block; margin-top:0.25rem;"></span>
+          </div>
+        </div>
+        <div class="dialog-footer">
+          <button type="button" class="btn btn-outline" onclick="closeModal('modal-edit-asg')">Cancel</button>
+          <button type="submit" class="btn btn-accent">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Upload PYQ -->
+  <div id="modal-upload-pyq" class="dialog-overlay" role="dialog" aria-modal="true">
+    <div class="dialog-container" style="max-width: 32rem;">
+      <div class="dialog-header">
+        <div class="dialog-title-wrap">
+          <h3 class="dialog-title">Upload Examination Question Paper</h3>
+          <p class="dialog-subtitle">Add official previous year examination paper with immediate download options.</p>
+        </div>
+        <button class="dialog-close-btn" onclick="closeModal('modal-upload-pyq')" aria-label="Close">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <form id="form-upload-pyq">
+        <div class="dialog-body" style="gap: 1rem;">
+          <div>
+            <label style="display:block; font-size:0.8125rem; font-weight:600; margin-bottom:0.25rem;">Paper Title</label>
+            <input type="text" id="pyq-up-title" class="input-control" placeholder="e.g. End Semester Exam 2025" required />
+          </div>
+          <div>
+            <label style="display:block; font-size:0.8125rem; font-weight:600; margin-bottom:0.25rem;">Subject Name</label>
+            <input type="text" id="pyq-up-subject" class="input-control" placeholder="e.g. Operating Systems" required />
+          </div>
+          <div class="form-row-2col">
+            <div>
+              <label style="display:block; font-size:0.8125rem; font-weight:600; margin-bottom:0.25rem;">Semester</label>
+              <select id="pyq-up-sem" class="input-control" required>
+                <option value="1">Semester 1</option>
+                <option value="2">Semester 2</option>
+                <option value="3">Semester 3</option>
+                <option value="4" selected>Semester 4</option>
+                <option value="5">Semester 5</option>
+                <option value="6">Semester 6</option>
+                <option value="7">Semester 7</option>
+                <option value="8">Semester 8</option>
+              </select>
+            </div>
+            <div>
+              <label style="display:block; font-size:0.8125rem; font-weight:600; margin-bottom:0.25rem;">Exam Year</label>
+              <select id="pyq-up-year" class="input-control" required>
+                <option value="2026">2026</option>
+                <option value="2025" selected>2025</option>
+                <option value="2024">2024</option>
+                <option value="2023">2023</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label style="display:block; font-size:0.8125rem; font-weight:600; margin-bottom:0.25rem;">Examination Type</label>
+            <select id="pyq-up-exam" class="input-control" required>
+              <option value="Final / End-Sem">Final / End-Sem</option>
+              <option value="Mid-Sem">Mid-Sem</option>
+              <option value="Remedial / Backlog">Remedial / Backlog</option>
+            </select>
+          </div>
+          <div>
+            <label style="display:block; font-size:0.8125rem; font-weight:600; margin-bottom:0.25rem;">Attach Question Paper (PDF or Image)</label>
+            <input type="file" id="pyq-up-file" class="input-control" accept=".pdf,image/*" required style="padding:0.4rem;" />
+          </div>
+        </div>
+        <div class="dialog-footer">
+          <button type="button" class="btn btn-outline" onclick="closeModal('modal-upload-pyq')">Cancel</button>
+          <button type="submit" class="btn btn-accent">Upload Question Paper</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Modify / Edit PYQ -->
+  <div id="modal-edit-pyq" class="dialog-overlay" role="dialog" aria-modal="true">
+    <div class="dialog-container" style="max-width: 32rem;">
+      <div class="dialog-header">
+        <div class="dialog-title-wrap">
+          <h3 class="dialog-title">Modify PYQ Paper</h3>
+          <p class="dialog-subtitle">Update examination details or replace the question paper file.</p>
+        </div>
+        <button class="dialog-close-btn" onclick="closeModal('modal-edit-pyq')" aria-label="Close">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <form id="form-edit-pyq">
+        <input type="hidden" id="edit-pyq-id" />
+        <div class="dialog-body" style="gap: 1rem;">
+          <div>
+            <label style="display:block; font-size:0.8125rem; font-weight:600; margin-bottom:0.25rem;">Paper Title</label>
+            <input type="text" id="edit-pyq-title" class="input-control" required />
+          </div>
+          <div>
+            <label style="display:block; font-size:0.8125rem; font-weight:600; margin-bottom:0.25rem;">Subject Name</label>
+            <input type="text" id="edit-pyq-subject" class="input-control" required />
+          </div>
+          <div class="form-row-2col">
+            <div>
+              <label style="display:block; font-size:0.8125rem; font-weight:600; margin-bottom:0.25rem;">Semester</label>
+              <select id="edit-pyq-sem" class="input-control" required>
+                <option value="1">Semester 1</option>
+                <option value="2">Semester 2</option>
+                <option value="3">Semester 3</option>
+                <option value="4">Semester 4</option>
+                <option value="5">Semester 5</option>
+                <option value="6">Semester 6</option>
+                <option value="7">Semester 7</option>
+                <option value="8">Semester 8</option>
+              </select>
+            </div>
+            <div>
+              <label style="display:block; font-size:0.8125rem; font-weight:600; margin-bottom:0.25rem;">Exam Year</label>
+              <select id="edit-pyq-year" class="input-control" required>
+                <option value="2026">2026</option>
+                <option value="2025">2025</option>
+                <option value="2024">2024</option>
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label style="display:block; font-size:0.8125rem; font-weight:600; margin-bottom:0.25rem;">Examination Type</label>
+            <select id="edit-pyq-exam" class="input-control" required>
+              <option value="Final / End-Sem">Final / End-Sem</option>
+              <option value="Mid-Sem">Mid-Sem</option>
+              <option value="Remedial / Backlog">Remedial / Backlog</option>
+            </select>
+          </div>
+          <div>
+            <label style="display:block; font-size:0.8125rem; font-weight:600; margin-bottom:0.25rem;">Replace File (Optional — leave empty to keep existing)</label>
+            <input type="file" id="edit-pyq-file" class="input-control" accept=".pdf,image/*" style="padding:0.4rem;" />
+            <span id="edit-pyq-file-current" style="font-size:0.75rem; color:var(--text-muted); display:block; margin-top:0.25rem;"></span>
+          </div>
+        </div>
+        <div class="dialog-footer">
+          <button type="button" class="btn btn-outline" onclick="closeModal('modal-edit-pyq')">Cancel</button>
+          <button type="submit" class="btn btn-accent">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Delete Confirmation -->
+  <div id="modal-delete-confirm" class="dialog-overlay" role="dialog" aria-modal="true">
+    <div class="dialog-container" style="max-width: 26rem;">
+      <div class="dialog-header">
+        <div class="dialog-title-wrap">
+          <h3 class="dialog-title">Confirm Deletion</h3>
+          <p class="dialog-subtitle">This item will be permanently removed.</p>
+        </div>
+        <button class="dialog-close-btn" onclick="closeModal('modal-delete-confirm')" aria-label="Close">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="dialog-body">
+        <p style="font-size: 0.9375rem; color: var(--text-primary); line-height: 1.5;" id="delete-prompt-text">
+          Are you sure you want to delete this record?
+        </p>
+      </div>
+      <div class="dialog-footer">
+        <button type="button" class="btn btn-outline" onclick="closeModal('modal-delete-confirm')">Cancel</button>
+        <button type="button" class="btn btn-accent" id="confirm-delete-btn" style="background:#dc2626;">Permanently Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Add New Admin (Super Admin Only) -->
+  <div id="modal-add-admin" class="dialog-overlay" role="dialog" aria-modal="true">
+    <div class="dialog-container" style="max-width: 30rem;">
+      <div class="dialog-header">
+        <div class="dialog-title-wrap">
+          <h3 class="dialog-title">Add New Admin</h3>
+          <p class="dialog-subtitle">Grant platform admin permissions to upload &amp; manage assignments and PYQs.</p>
+        </div>
+        <button class="dialog-close-btn" onclick="closeModal('modal-add-admin')" aria-label="Close">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <form id="form-add-admin">
+        <div class="dialog-body" style="gap: 1rem;">
+          <div id="add-admin-error" style="display: none; padding: 0.5rem 0.75rem; border-radius: var(--radius-sm); background: rgba(220, 38, 38, 0.15); border: 1px solid rgba(220, 38, 38, 0.3); color: #f87171; font-size: 0.8125rem;"></div>
+          <div>
+            <label style="display:block; font-size:0.8125rem; font-weight:600; margin-bottom:0.25rem;">Admin Full Name</label>
+            <input type="text" id="new-admin-name" class="input-control" placeholder="e.g. Rahul Sharma" required />
+          </div>
+          <div>
+            <label style="display:block; font-size:0.8125rem; font-weight:600; margin-bottom:0.25rem;">Gmail Address</label>
+            <input type="email" id="new-admin-email" class="input-control" placeholder="e.g. rahul.sharma@gmail.com" required />
+          </div>
+          <div>
+            <label style="display:block; font-size:0.8125rem; font-weight:600; margin-bottom:0.25rem;">Temporary Password</label>
+            <input type="password" id="new-admin-password" class="input-control" placeholder="Enter secure password" required minlength="6" />
+          </div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); line-height: 1.4;">
+            ℹ️ Sub-admins can upload, modify, and delete Assignments &amp; PYQs. They cannot manage, add, or delete other admins.
+          </div>
+        </div>
+        <div class="dialog-footer">
+          <button type="button" class="btn btn-outline" onclick="closeModal('modal-add-admin')">Cancel</button>
+          <button type="submit" class="btn btn-accent">Create Admin Account</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Delete Admin Confirmation (Super Admin Only) -->
+  <div id="modal-delete-admin" class="dialog-overlay" role="dialog" aria-modal="true">
+    <div class="dialog-container" style="max-width: 26rem;">
+      <div class="dialog-header">
+        <div class="dialog-title-wrap">
+          <h3 class="dialog-title">Revoke Admin Access</h3>
+          <p class="dialog-subtitle">This admin account will be permanently removed.</p>
+        </div>
+        <button class="dialog-close-btn" onclick="closeModal('modal-delete-admin')" aria-label="Close">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="dialog-body">
+        <p style="font-size: 0.9375rem; color: var(--text-primary); line-height: 1.5;" id="delete-admin-prompt-text">
+          Are you sure you want to delete this admin account?
+        </p>
+      </div>
+      <div class="dialog-footer">
+        <button type="button" class="btn btn-outline" onclick="closeModal('modal-delete-admin')">Cancel</button>
+        <button type="button" class="btn btn-accent" id="confirm-delete-admin-btn" style="background:#dc2626;">Permanently Revoke</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Clean Footer -->
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <a href="index.html" class="brand-logo" aria-label="File hub">
+        <img src="assets/icons/logo.svg" alt="File hub Logo" width="28" height="28" class="brand-logo-img" />
+        <span>File hub</span>
+      </a>
+      <p class="footer-copyright">
+        &copy; 2026 File hub. Built by Pankaj Patil .
+      </p>
+    </div>
+  </footer>
+
+  <!-- Fixed App-Like Bottom Navigation Bar -->
+  <nav class="bottom-nav-bar" aria-label="Bottom Main Navigation">
+    <div class="bottom-nav-inner">
+      <a href="index.html" class="bottom-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span>Home</span>
+      </a>
+
+      <a href="assignment.html" class="bottom-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+        </svg>
+        <span>Assignment</span>
+      </a>
+
+      <a href="pyqs.html" class="bottom-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+          <polyline points="10 7 14 11 10 15"></polyline>
+        </svg>
+        <span>PYQ's</span>
+      </a>
+
+      <a href="dashboard.html" class="bottom-nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+        <span>Dashboard</span>
+      </a>
+
+      <button type="button" id="bottom-nav-theme" class="bottom-nav-item" aria-label="Switch Theme">
+        <svg class="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <svg class="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <span>Theme</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Scripts -->
+  <script src="js/firebase-config.js"></script>
+  <script>
+    // Require Authentication
+    window.FilehubAuth.requireAuth();
+
+    (function() {
+      // Theme Toggle Engine
+      const savedTheme = localStorage.getItem('filehub_theme');
+      if (savedTheme === 'light') document.documentElement.classList.add('light');
+      
+      function toggleTheme() {
+        const isLight = document.documentElement.classList.toggle('light');
+        localStorage.setItem('filehub_theme', isLight ? 'light' : 'dark');
+      }
+
+      const bottomThemeBtn = document.getElementById('bottom-nav-theme');
+      const headerThemeBtn = document.getElementById('header-theme-btn');
+      if (bottomThemeBtn) bottomThemeBtn.addEventListener('click', toggleTheme);
+      if (headerThemeBtn) headerThemeBtn.addEventListener('click', toggleTheme);
+
+      // User details & Multi-Tier Role Check
+      const user = window.FilehubAuth.getUser();
+      const isSuper = user && window.FilehubAuth.isSuperAdmin(user.email);
+      const tabBtnAdmins = document.getElementById('tab-btn-admins');
+      const tabAdmins = document.getElementById('tab-admins');
+      const roleBadge = document.getElementById('dash-role-badge');
+      const dashAvatar = document.getElementById('dash-avatar');
+
+      if (user) {
+        document.getElementById('dash-user-name').textContent = user.name || (isSuper ? 'Pankaj Patil' : 'Administrator');
+        document.getElementById('dash-user-email').textContent = user.email;
+        if (dashAvatar) {
+          const initials = (user.name || (isSuper ? 'Pankaj Patil' : 'Admin')).split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+          dashAvatar.textContent = initials || 'AD';
+        }
+        if (roleBadge) {
+          if (isSuper) {
+            roleBadge.textContent = 'Super Admin (Primary)';
+            roleBadge.className = 'badge';
+          } else {
+            roleBadge.textContent = 'Content Admin';
+            roleBadge.className = 'badge badge-muted';
+          }
+        }
+      }
+
+      // Role Access Enforcement: Only patilpankaj221134@gmail.com can see and access Admin Management
+      if (isSuper && tabBtnAdmins) {
+        tabBtnAdmins.style.display = 'inline-flex';
+      } else if (tabBtnAdmins) {
+        tabBtnAdmins.style.display = 'none';
+        if (tabAdmins) tabAdmins.remove(); // Completely purge from DOM for sub-admins
+      }
+
+      // Logout
+      document.getElementById('header-logout-btn').addEventListener('click', function() {
+        window.FilehubAuth.logout();
+      });
+
+      // Tab Switch
+      window.switchTab = function(tab) {
+        if (tab === 'admins' && !isSuper) {
+          tab = 'asg';
+        }
+        document.getElementById('tab-btn-asg').classList.toggle('active', tab === 'asg');
+        document.getElementById('tab-btn-pyq').classList.toggle('active', tab === 'pyq');
+        if (tabBtnAdmins) tabBtnAdmins.classList.toggle('active', tab === 'admins');
+
+        document.getElementById('tab-asg').classList.toggle('active', tab === 'asg');
+        document.getElementById('tab-pyq').classList.toggle('active', tab === 'pyq');
+        const activeTabAdmins = document.getElementById('tab-admins');
+        if (activeTabAdmins) activeTabAdmins.classList.toggle('active', tab === 'admins');
+      };
+
+      // Modals
+      window.openModal = function(id) {
+        document.getElementById(id).classList.add('active');
+        document.body.style.overflow = 'hidden';
+      };
+      window.closeModal = function(id) {
+        document.getElementById(id).classList.remove('active');
+        document.body.style.overflow = '';
+      };
+
+      // Close modal on backdrop click
+      document.querySelectorAll('.dialog-overlay').forEach(modal => {
+        modal.addEventListener('click', e => {
+          if (e.target === modal) closeModal(modal.id);
+        });
+      });
+
+      // --- ASSIGNMENTS CRUD ---
+      const asgSearch = document.getElementById('asg-search');
+      const asgSemFilter = document.getElementById('asg-sem-filter');
+      const asgTableBody = document.getElementById('asg-table-body');
+      const asgCountBadge = document.getElementById('asg-count-badge');
+
+      function renderAssignments() {
+        const query = (asgSearch.value || '').toLowerCase().trim();
+        const sem = asgSemFilter.value;
+        const all = window.FilehubData.getAssignments();
+        
+        asgCountBadge.textContent = all.length;
+
+        const filtered = all.filter(a => {
+          const matchQ = !query || a.title.toLowerCase().includes(query) || a.subject.toLowerCase().includes(query);
+          const matchS = !sem || a.semester.toString() === sem;
+          return matchQ && matchS;
+        });
+
+        if (filtered.length === 0) {
+          asgTableBody.innerHTML = `
+            <tr>
+              <td colspan="6" style="text-align: center; padding: 2.5rem 1rem; color: var(--text-muted);">
+                ${all.length === 0 ? 'No assignments uploaded yet. Click "+ Upload Assignment" above to add your first one.' : 'No assignments matching your search filter.'}
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        asgTableBody.innerHTML = filtered.map(a => `
+          <tr>
+            <td data-label="Assignment Title" style="font-weight: 600;">
+              <div>${escapeHtml(a.title)}</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: normal;">Asg #${a.number} • ${a.date || 'Recent'}</div>
+            </td>
+            <td data-label="Subject"><span class="badge badge-muted">${escapeHtml(a.subject)}</span></td>
+            <td data-label="Semester">Sem ${a.semester}</td>
+            <td data-label="Branch" style="font-size: 0.8125rem; color: var(--text-secondary);">${escapeHtml(a.branch)}</td>
+            <td data-label="File Size" style="font-size: 0.75rem; color: var(--text-muted);">${a.fileSize || 'PDF'}</td>
+            <td data-label="Actions">
+              <div class="table-actions">
+                <button type="button" class="btn btn-outline btn-icon" onclick="viewFile('${a.id}', 'asg')">
+                  View
+                </button>
+                <button type="button" class="btn btn-outline btn-icon" onclick="downloadFile('${a.id}', 'asg')">
+                  Download
+                </button>
+                <button type="button" class="btn btn-edit btn-icon" onclick="openEditAsg('${a.id}')">
+                  Modify
+                </button>
+                <button type="button" class="btn btn-delete btn-icon" onclick="confirmDelete('${a.id}', 'asg', '${escapeAttr(a.title)}')">
+                  Delete
+                </button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      asgSearch.addEventListener('input', renderAssignments);
+      asgSemFilter.addEventListener('change', renderAssignments);
+
+      // Upload Assignment Form
+      document.getElementById('open-upload-asg-btn').addEventListener('click', () => openModal('modal-upload-asg'));
+      document.getElementById('form-upload-asg').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const fileInput = document.getElementById('asg-up-file');
+        const file = fileInput.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          const newAsg = {
+            id: 'asg-' + Date.now(),
+            title: document.getElementById('asg-up-title').value.trim(),
+            subject: document.getElementById('asg-up-subject').value.trim(),
+            semester: parseInt(document.getElementById('asg-up-sem').value, 10),
+            number: parseInt(document.getElementById('asg-up-num').value, 10),
+            branch: document.getElementById('asg-up-branch').value,
+            author: user ? user.name : 'Pankaj Patil',
+            date: new Date().toISOString().split('T')[0],
+            fileName: file.name,
+            fileSize: (file.size / (1024 * 1024)).toFixed(1) + ' MB',
+            fileData: evt.target.result
+          };
+          window.FilehubData.addAssignment(newAsg);
+          closeModal('modal-upload-asg');
+          document.getElementById('form-upload-asg').reset();
+          renderAssignments();
+        };
+        reader.readAsDataURL(file);
+      });
+
+      // Modify / Edit Assignment
+      window.openEditAsg = function(id) {
+        const item = window.FilehubData.getAssignments().find(a => a.id === id);
+        if (!item) return;
+        document.getElementById('edit-asg-id').value = item.id;
+        document.getElementById('edit-asg-title').value = item.title;
+        document.getElementById('edit-asg-subject').value = item.subject;
+        document.getElementById('edit-asg-sem').value = item.semester;
+        document.getElementById('edit-asg-num').value = item.number;
+        document.getElementById('edit-asg-branch').value = item.branch;
+        document.getElementById('edit-asg-file').value = '';
+        document.getElementById('edit-asg-file-current').textContent = 'Current file: ' + (item.fileName || 'Attached file');
+        openModal('modal-edit-asg');
+      };
+
+      document.getElementById('form-edit-asg').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const id = document.getElementById('edit-asg-id').value;
+        const fileInput = document.getElementById('edit-asg-file');
+        const file = fileInput.files[0];
+
+        const updatedFields = {
+          title: document.getElementById('edit-asg-title').value.trim(),
+          subject: document.getElementById('edit-asg-subject').value.trim(),
+          semester: parseInt(document.getElementById('edit-asg-sem').value, 10),
+          number: parseInt(document.getElementById('edit-asg-num').value, 10),
+          branch: document.getElementById('edit-asg-branch').value
+        };
+
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(evt) {
+            updatedFields.fileName = file.name;
+            updatedFields.fileSize = (file.size / (1024 * 1024)).toFixed(1) + ' MB';
+            updatedFields.fileData = evt.target.result;
+            window.FilehubData.updateAssignment(id, updatedFields);
+            closeModal('modal-edit-asg');
+            renderAssignments();
+          };
+          reader.readAsDataURL(file);
+        } else {
+          window.FilehubData.updateAssignment(id, updatedFields);
+          closeModal('modal-edit-asg');
+          renderAssignments();
+        }
+      });
+
+      // --- PYQ'S CRUD ---
+      const pyqSearch = document.getElementById('pyq-search');
+      const pyqSemFilter = document.getElementById('pyq-sem-filter');
+      const pyqTableBody = document.getElementById('pyq-table-body');
+      const pyqCountBadge = document.getElementById('pyq-count-badge');
+
+      function renderPYQs() {
+        const query = (pyqSearch.value || '').toLowerCase().trim();
+        const sem = pyqSemFilter.value;
+        const all = window.FilehubData.getPYQs();
+
+        pyqCountBadge.textContent = all.length;
+
+        const filtered = all.filter(p => {
+          const matchQ = !query || p.title.toLowerCase().includes(query) || p.subject.toLowerCase().includes(query);
+          const matchS = !sem || p.semester.toString() === sem;
+          return matchQ && matchS;
+        });
+
+        if (filtered.length === 0) {
+          pyqTableBody.innerHTML = `
+            <tr>
+              <td colspan="6" style="text-align: center; padding: 2.5rem 1rem; color: var(--text-muted);">
+                ${all.length === 0 ? 'No PYQ papers uploaded yet. Click "+ Upload PYQ Paper" above to add the first paper.' : 'No question papers matching your search filter.'}
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        pyqTableBody.innerHTML = filtered.map(p => `
+          <tr>
+            <td data-label="Paper Title" style="font-weight: 600;">
+              <div>${escapeHtml(p.title)}</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: normal;">Uploaded: ${p.uploadedAt ? p.uploadedAt.split('T')[0] : 'Recent'}</div>
+            </td>
+            <td data-label="Subject"><span class="badge badge-muted">${escapeHtml(p.subject)}</span></td>
+            <td data-label="Semester">Sem ${p.semester}</td>
+            <td data-label="Exam & Year">
+              <span class="badge">${escapeHtml(p.examType)}</span>
+              <span style="font-size: 0.8125rem; margin-left: 0.35rem; color: var(--text-secondary);">${p.year}</span>
+            </td>
+            <td data-label="File Info" style="font-size: 0.75rem; color: var(--text-muted);">${p.fileSize || 'PDF'}</td>
+            <td data-label="Actions">
+              <div class="table-actions">
+                <button type="button" class="btn btn-outline btn-icon" onclick="viewFile('${p.id}', 'pyq')">
+                  View
+                </button>
+                <button type="button" class="btn btn-outline btn-icon" onclick="downloadFile('${p.id}', 'pyq')">
+                  Download
+                </button>
+                <button type="button" class="btn btn-edit btn-icon" onclick="openEditPyq('${p.id}')">
+                  Modify
+                </button>
+                <button type="button" class="btn btn-delete btn-icon" onclick="confirmDelete('${p.id}', 'pyq', '${escapeAttr(p.title)}')">
+                  Delete
+                </button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      pyqSearch.addEventListener('input', renderPYQs);
+      pyqSemFilter.addEventListener('change', renderPYQs);
+
+      // Upload PYQ Form
+      document.getElementById('open-upload-pyq-btn').addEventListener('click', () => openModal('modal-upload-pyq'));
+      document.getElementById('form-upload-pyq').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const fileInput = document.getElementById('pyq-up-file');
+        const file = fileInput.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          const newPyq = {
+            id: 'pyq-' + Date.now(),
+            title: document.getElementById('pyq-up-title').value.trim(),
+            subject: document.getElementById('pyq-up-subject').value.trim(),
+            semester: parseInt(document.getElementById('pyq-up-sem').value, 10),
+            year: parseInt(document.getElementById('pyq-up-year').value, 10),
+            examType: document.getElementById('pyq-up-exam').value,
+            fileName: file.name,
+            fileSize: (file.size / (1024 * 1024)).toFixed(1) + ' MB',
+            fileData: evt.target.result,
+            uploadedAt: new Date().toISOString()
+          };
+          window.FilehubData.addPYQ(newPyq);
+          closeModal('modal-upload-pyq');
+          document.getElementById('form-upload-pyq').reset();
+          renderPYQs();
+        };
+        reader.readAsDataURL(file);
+      });
+
+      // Modify / Edit PYQ
+      window.openEditPyq = function(id) {
+        const item = window.FilehubData.getPYQs().find(p => p.id === id);
+        if (!item) return;
+        document.getElementById('edit-pyq-id').value = item.id;
+        document.getElementById('edit-pyq-title').value = item.title;
+        document.getElementById('edit-pyq-subject').value = item.subject;
+        document.getElementById('edit-pyq-sem').value = item.semester;
+        document.getElementById('edit-pyq-year').value = item.year;
+        document.getElementById('edit-pyq-exam').value = item.examType;
+        document.getElementById('edit-pyq-file').value = '';
+        document.getElementById('edit-pyq-file-current').textContent = 'Current file: ' + (item.fileName || 'Attached file');
+        openModal('modal-edit-pyq');
+      };
+
+      document.getElementById('form-edit-pyq').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const id = document.getElementById('edit-pyq-id').value;
+        const fileInput = document.getElementById('edit-pyq-file');
+        const file = fileInput.files[0];
+
+        const updatedFields = {
+          title: document.getElementById('edit-pyq-title').value.trim(),
+          subject: document.getElementById('edit-pyq-subject').value.trim(),
+          semester: parseInt(document.getElementById('edit-pyq-sem').value, 10),
+          year: parseInt(document.getElementById('edit-pyq-year').value, 10),
+          examType: document.getElementById('edit-pyq-exam').value
+        };
+
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(evt) {
+            updatedFields.fileName = file.name;
+            updatedFields.fileSize = (file.size / (1024 * 1024)).toFixed(1) + ' MB';
+            updatedFields.fileData = evt.target.result;
+            window.FilehubData.updatePYQ(id, updatedFields);
+            closeModal('modal-edit-pyq');
+            renderPYQs();
+          };
+          reader.readAsDataURL(file);
+        } else {
+          window.FilehubData.updatePYQ(id, updatedFields);
+          closeModal('modal-edit-pyq');
+          renderPYQs();
+        }
+      });
+
+      // --- GENERAL VIEW / DOWNLOAD / DELETE LOGIC ---
+      window.viewFile = function(id, type) {
+        const item = type === 'asg'
+          ? window.FilehubData.getAssignments().find(a => a.id === id)
+          : window.FilehubData.getPYQs().find(p => p.id === id);
+
+        if (!item || !item.fileData) {
+          alert('File content is not available.');
+          return;
+        }
+        const win = window.open();
+        if (item.fileData.startsWith('data:image')) {
+          win.document.write(`<title>${escapeHtml(item.title)}</title><body style="margin:0; background:#09090b; display:flex; justify-content:center; align-items:center; min-height:100vh;"><img src="${item.fileData}" style="max-width:90vw; max-height:90vh; border-radius:8px;" /></body>`);
+        } else {
+          win.document.write(`<title>${escapeHtml(item.title)}</title><body style="margin:0;"><iframe src="${item.fileData}" style="width:100vw; height:100vh; border:none;"></iframe></body>`);
+        }
+      };
+
+      window.downloadFile = function(id, type) {
+        const item = type === 'asg'
+          ? window.FilehubData.getAssignments().find(a => a.id === id)
+          : window.FilehubData.getPYQs().find(p => p.id === id);
+
+        if (!item || !item.fileData) {
+          alert('File content is not available.');
+          return;
+        }
+        const a = document.createElement('a');
+        a.href = item.fileData;
+        a.download = item.fileName || (item.title + '.pdf');
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      };
+
+      // Confirmation Modal for Deletion
+      let pendingDelete = null;
+      window.confirmDelete = function(id, type, title) {
+        pendingDelete = { id, type };
+        document.getElementById('delete-prompt-text').textContent = `Are you sure you want to permanently delete "${title}"? This action cannot be reversed.`;
+        openModal('modal-delete-confirm');
+      };
+
+      document.getElementById('confirm-delete-btn').addEventListener('click', function() {
+        if (!pendingDelete) return;
+        if (pendingDelete.type === 'asg') {
+          window.FilehubData.deleteAssignment(pendingDelete.id);
+          renderAssignments();
+        } else if (pendingDelete.type === 'pyq') {
+          window.FilehubData.deletePYQ(pendingDelete.id);
+          renderPYQs();
+        }
+        pendingDelete = null;
+        closeModal('modal-delete-confirm');
+      });
+
+      function escapeHtml(str) {
+        return (str || '').replace(/[&<>"']/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;' })[m]);
+      }
+      function escapeAttr(str) {
+        return (str || '').replace(/[&<>"']/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;' })[m]);
+      }
+
+      // --- SUPER ADMIN: ADMIN MANAGEMENT (patilpankaj221134@gmail.com exclusive) ---
+      const adminSearch = document.getElementById('admin-search');
+      const adminsTableBody = document.getElementById('admins-table-body');
+      const adminsCountBadge = document.getElementById('admins-count-badge');
+      const adminTotalCounter = document.getElementById('admin-total-counter');
+
+      function renderAdmins() {
+        if (!isSuper || !adminsTableBody) return;
+        const query = (adminSearch ? adminSearch.value : '').toLowerCase().trim();
+        const managed = window.FilehubAuth.getManagedAdmins();
+
+        if (adminsCountBadge) adminsCountBadge.textContent = (managed.length + 1).toString();
+        if (adminTotalCounter) adminTotalCounter.textContent = `Showing ${managed.length + 1} total administrators`;
+
+        let superAdminMatches = !query || 
+          "pankaj patil".includes(query) || 
+          "patilpankaj221134@gmail.com".includes(query);
+
+        let filteredManaged = managed.filter(a => {
+          return !query || 
+            (a.name && a.name.toLowerCase().includes(query)) || 
+            (a.email && a.email.toLowerCase().includes(query));
+        });
+
+        let rowsHtml = '';
+
+        if (superAdminMatches) {
+          rowsHtml += `
+            <tr style="background: rgba(220, 38, 38, 0.04);">
+              <td data-label="Administrator" style="font-weight: 700;">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <span>Pankaj Patil</span>
+                  <span class="badge" style="font-size: 0.6875rem;">Owner</span>
+                </div>
+              </td>
+              <td data-label="Gmail Address"><span style="font-family: monospace; font-size: 0.8125rem;">patilpankaj221134@gmail.com</span></td>
+              <td data-label="Role & Scope"><span class="badge">Full Platform Super Admin</span></td>
+              <td data-label="Status"><span class="badge" style="background: rgba(34, 197, 94, 0.15); color: #22c55e; border-color: rgba(34, 197, 94, 0.3);">Active (Permanent)</span></td>
+              <td data-label="Date Added" style="font-size: 0.75rem; color: var(--text-muted);">Creator</td>
+              <td data-label="Access Controls">
+                <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">🔒 Primary Admin</span>
+              </td>
+            </tr>
+          `;
+        }
+
+        filteredManaged.forEach(a => {
+          const isActive = a.status === 'active';
+          rowsHtml += `
+            <tr>
+              <td data-label="Administrator" style="font-weight: 600;">
+                <div>${escapeHtml(a.name)}</div>
+              </td>
+              <td data-label="Gmail Address"><span style="font-family: monospace; font-size: 0.8125rem;">${escapeHtml(a.email)}</span></td>
+              <td data-label="Role & Scope"><span class="badge badge-muted">Content Admin</span></td>
+              <td data-label="Status">
+                ${isActive 
+                  ? `<span class="badge" style="background: rgba(34, 197, 94, 0.15); color: #22c55e; border-color: rgba(34, 197, 94, 0.3);">Active</span>` 
+                  : `<span class="badge" style="background: rgba(239, 68, 68, 0.15); color: #ef4444; border-color: rgba(239, 68, 68, 0.3);">Restricted</span>`
+                }
+              </td>
+              <td data-label="Date Added" style="font-size: 0.75rem; color: var(--text-muted);">${a.createdAt ? a.createdAt.split('T')[0] : 'Recent'}</td>
+              <td data-label="Access Controls">
+                <div class="table-actions">
+                  <button type="button" class="btn btn-outline btn-icon" style="${isActive ? 'color: #f59e0b; border-color: rgba(245, 158, 11, 0.4);' : 'color: #22c55e; border-color: rgba(34, 197, 94, 0.4);'}" onclick="toggleAdminStatus('${a.id}')">
+                    ${isActive ? 'Restrict' : 'Activate'}
+                  </button>
+                  <button type="button" class="btn btn-delete btn-icon" onclick="confirmDeleteAdmin('${a.id}', '${escapeAttr(a.name)}', '${escapeAttr(a.email)}')">
+                    Delete
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
+        });
+
+        if (!superAdminMatches && filteredManaged.length === 0) {
+          rowsHtml = `
+            <tr>
+              <td colspan="6" style="text-align: center; padding: 2.5rem 1rem; color: var(--text-muted);">
+                No administrators found matching your search.
+              </td>
+            </tr>
+          `;
+        }
+
+        adminsTableBody.innerHTML = rowsHtml;
+      }
+
+      if (isSuper) {
+        if (adminSearch) adminSearch.addEventListener('input', renderAdmins);
+
+        // Open Add Admin Modal
+        const openAddAdminBtn = document.getElementById('open-add-admin-btn');
+        if (openAddAdminBtn) openAddAdminBtn.addEventListener('click', () => openModal('modal-add-admin'));
+
+        // Form Add Admin
+        const formAddAdmin = document.getElementById('form-add-admin');
+        const addAdminError = document.getElementById('add-admin-error');
+        if (formAddAdmin) {
+          formAddAdmin.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (addAdminError) addAdminError.style.display = 'none';
+
+            const name = document.getElementById('new-admin-name').value.trim();
+            const email = document.getElementById('new-admin-email').value.trim();
+            const password = document.getElementById('new-admin-password').value;
+
+            const res = window.FilehubAuth.addManagedAdmin({ name, email, password });
+            if (res.success) {
+              closeModal('modal-add-admin');
+              formAddAdmin.reset();
+              renderAdmins();
+            } else {
+              if (addAdminError) {
+                addAdminError.textContent = res.message;
+                addAdminError.style.display = 'block';
+              }
+            }
+          });
+        }
+
+        // Toggle Admin Status (Restrict / Unrestrict)
+        window.toggleAdminStatus = function(id) {
+          window.FilehubAuth.toggleRestrictAdmin(id);
+          renderAdmins();
+        };
+
+        // Delete Admin
+        let pendingDeleteAdminId = null;
+        window.confirmDeleteAdmin = function(id, name, email) {
+          pendingDeleteAdminId = id;
+          document.getElementById('delete-admin-prompt-text').textContent = 
+            `Are you sure you want to permanently revoke admin access for "${name}" (${email})? They will immediately lose access to the File hub admin portal.`;
+          openModal('modal-delete-admin');
+        };
+
+        const confirmDeleteAdminBtn = document.getElementById('confirm-delete-admin-btn');
+        if (confirmDeleteAdminBtn) {
+          confirmDeleteAdminBtn.addEventListener('click', function() {
+            if (pendingDeleteAdminId) {
+              window.FilehubAuth.deleteManagedAdmin(pendingDeleteAdminId);
+              pendingDeleteAdminId = null;
+              closeModal('modal-delete-admin');
+              renderAdmins();
+            }
+          });
+        }
+      }
+
+      // Initial Render
+      renderAssignments();
+      renderPYQs();
+      if (isSuper) {
+        renderAdmins();
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 225" width="400" height="225" fill="none">
+  <rect width="400" height="225" rx="12" fill="#18181b"/>
+  <rect x="1" y="1" width="398" height="223" rx="11" stroke="#27272a" stroke-width="2"/>
+  <!-- Layer 1: Frontend -->
+  <rect x="50" y="38" width="300" height="42" rx="8" fill="#09090b" stroke="#3f3f46" stroke-width="1.5"/>
+  <circle cx="75" cy="59" r="10" fill="#ef4444" fill-opacity="0.2"/>
+  <path d="M72 54 L78 59 L72 64" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
+  <text x="100" y="64" fill="#fafafa" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Frontend UI (React, Next.js, Tailwind)</text>
+  
+  <!-- Connector -->
+  <line x1="200" y1="80" x2="200" y2="92" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
+  
+  <!-- Layer 2: API / Backend -->
+  <rect x="50" y="92" width="300" height="42" rx="8" fill="#09090b" stroke="#ef4444" stroke-width="1.5"/>
+  <circle cx="75" cy="113" r="10" fill="#ef4444" fill-opacity="0.2"/>
+  <path d="M70 113 L80 113 M75 108 L75 118" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
+  <text x="100" y="118" fill="#fafafa" font-family="system-ui, sans-serif" font-size="12" font-weight="600">REST &amp; GraphQL APIs (Node.js, Go, Python)</text>
+  
+  <!-- Connector -->
+  <line x1="200" y1="134" x2="200" y2="146" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
+  
+  <!-- Layer 3: Database & Cloud -->
+  <rect x="50" y="146" width="300" height="42" rx="8" fill="#09090b" stroke="#3f3f46" stroke-width="1.5"/>
+  <circle cx="75" cy="167" r="10" fill="#ef4444" fill-opacity="0.2"/>
+  <ellipse cx="75" cy="165" rx="8" ry="4" stroke="#ef4444" stroke-width="1.5"/>
+  <path d="M67 165 v4 c0 2.2 3.6 4 8 4 s8 -1.8 8 -4 v-4" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="100" y="172" fill="#fafafa" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Database &amp; DevOps (Postgres, Redis, Docker)</text>
+</svg>

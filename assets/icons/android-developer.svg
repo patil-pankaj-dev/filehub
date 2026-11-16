@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 225" width="400" height="225" fill="none">
+  <rect width="400" height="225" rx="12" fill="#18181b"/>
+  <rect x="1" y="1" width="398" height="223" rx="11" stroke="#27272a" stroke-width="2"/>
+  
+  <!-- Android Robot Head & Antennas -->
+  <g transform="translate(140, 45)">
+    <!-- Antennas -->
+    <line x1="38" y1="20" x2="24" y2="4" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+    <line x1="82" y1="20" x2="96" y2="4" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+    <!-- Head Dome -->
+    <path d="M20 50 A40 40 0 0 1 100 50 Z" fill="#09090b" stroke="#ef4444" stroke-width="2"/>
+    <!-- Eyes -->
+    <circle cx="45" cy="35" r="4" fill="#fafafa"/>
+    <circle cx="75" cy="35" r="4" fill="#fafafa"/>
+    <!-- Body -->
+    <rect x="20" y="56" width="80" height="60" rx="6" fill="#09090b" stroke="#3f3f46" stroke-width="2"/>
+    <!-- Arms -->
+    <rect x="4" y="58" width="10" height="45" rx="5" fill="#18181b" stroke="#3f3f46" stroke-width="1.5"/>
+    <rect x="106" y="58" width="10" height="45" rx="5" fill="#18181b" stroke="#ef4444" stroke-width="1.5"/>
+    <!-- Legs -->
+    <rect x="38" y="120" width="12" height="22" rx="5" fill="#18181b" stroke="#3f3f46" stroke-width="1.5"/>
+    <rect x="70" y="120" width="12" height="22" rx="5" fill="#18181b" stroke="#3f3f46" stroke-width="1.5"/>
+  </g>
+  
+  <!-- Kotlin / Compose badges -->
+  <rect x="40" y="90" width="85" height="30" rx="6" fill="#09090b" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="82" y="110" fill="#fafafa" font-family="monospace" font-size="12" font-weight="bold" text-anchor="middle">Kotlin</text>
+
+  <rect x="275" y="90" width="90" height="30" rx="6" fill="#09090b" stroke="#3f3f46" stroke-width="1.5"/>
+  <text x="320" y="110" fill="#fafafa" font-family="monospace" font-size="12" font-weight="bold" text-anchor="middle">Jetpack</text>
+</svg>

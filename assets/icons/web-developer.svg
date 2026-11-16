@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 225" width="400" height="225" fill="none">
+  <rect width="400" height="225" rx="12" fill="#18181b"/>
+  <rect x="1" y="1" width="398" height="223" rx="11" stroke="#27272a" stroke-width="2"/>
+  
+  <!-- Globe / Web grid -->
+  <circle cx="120" cy="112" r="55" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3,3"/>
+  <ellipse cx="120" cy="112" rx="55" ry="24" stroke="#3f3f46" stroke-width="1.5"/>
+  <ellipse cx="120" cy="112" rx="24" ry="55" stroke="#ef4444" stroke-width="1.5"/>
+  <line x1="65" y1="112" x2="175" y2="112" stroke="#3f3f46" stroke-width="1.5"/>
+  <line x1="120" y1="57" x2="120" y2="167" stroke="#3f3f46" stroke-width="1.5"/>
+
+  <!-- Code Tags -->
+  <rect x="210" y="60" width="145" height="105" rx="8" fill="#09090b" stroke="#3f3f46" stroke-width="1.5"/>
+  <text x="230" y="88" fill="#ef4444" font-family="monospace" font-size="14" font-weight="bold">&lt;html&gt;</text>
+  <text x="245" y="110" fill="#a1a1aa" font-family="monospace" font-size="13">&lt;style&gt;</text>
+  <text x="245" y="132" fill="#fafafa" font-family="monospace" font-size="13">&lt;script&gt;</text>
+  <text x="230" y="152" fill="#ef4444" font-family="monospace" font-size="14" font-weight="bold">&lt;/html&gt;</text>
+</svg>

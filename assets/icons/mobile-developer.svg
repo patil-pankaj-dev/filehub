@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 225" width="400" height="225" fill="none">
+  <rect width="400" height="225" rx="12" fill="#18181b"/>
+  <rect x="1" y="1" width="398" height="223" rx="11" stroke="#27272a" stroke-width="2"/>
+  
+  <!-- Mobile Device Outline -->
+  <g transform="translate(150, 25)">
+    <rect width="100" height="175" rx="18" fill="#09090b" stroke="#ef4444" stroke-width="2"/>
+    <!-- Speaker notch -->
+    <rect x="35" y="10" width="30" height="4" rx="2" fill="#3f3f46"/>
+    <!-- Screen -->
+    <rect x="8" y="24" width="84" height="130" rx="6" fill="#18181b"/>
+    <!-- App UI Mockup -->
+    <rect x="16" y="34" width="40" height="8" rx="2" fill="#ef4444"/>
+    <circle cx="78" cy="38" r="5" fill="#3f3f46"/>
+    
+    <rect x="16" y="50" width="68" height="26" rx="4" fill="#27272a"/>
+    <circle cx="28" cy="63" r="6" fill="#ef4444"/>
+    <rect x="40" y="58" width="36" height="4" rx="2" fill="#fafafa"/>
+    <rect x="40" y="66" width="24" height="3" rx="1.5" fill="#71717a"/>
+    
+    <!-- Action Grid -->
+    <rect x="16" y="84" width="30" height="30" rx="4" fill="#09090b" stroke="#3f3f46" stroke-width="1"/>
+    <rect x="54" y="84" width="30" height="30" rx="4" fill="#09090b" stroke="#ef4444" stroke-width="1"/>
+    
+    <!-- Home bar -->
+    <rect x="35" y="162" width="30" height="3" rx="1.5" fill="#71717a"/>
+  </g>
+  
+  <!-- Orbiting feature badges -->
+  <rect x="45" y="60" width="80" height="28" rx="14" fill="#09090b" stroke="#3f3f46" stroke-width="1.5"/>
+  <text x="85" y="78" fill="#fafafa" font-family="system-ui, sans-serif" font-size="11" font-weight="600" text-anchor="middle">React Native</text>
+
+  <rect x="45" y="130" width="80" height="28" rx="14" fill="#09090b" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="85" y="148" fill="#fafafa" font-family="system-ui, sans-serif" font-size="11" font-weight="600" text-anchor="middle">Flutter / Dart</text>
+
+  <rect x="275" y="95" width="80" height="28" rx="14" fill="#09090b" stroke="#3f3f46" stroke-width="1.5"/>
+  <text x="315" y="113" fill="#fafafa" font-family="system-ui, sans-serif" font-size="11" font-weight="600" text-anchor="middle">Cross-Platform</text>
+</svg>

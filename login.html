@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Admin Login — File hub</title>
+  <meta name="description" content="Sign in to the File hub administrator portal to manage, edit, upload, and delete assignments and PYQs." />
+  <link rel="icon" href="assets/icons/logo.svg" type="image/svg+xml" />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/shadcn-components.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <style>
+    .login-container {
+      min-height: calc(100vh - 160px);
+      min-height: calc(100dvh - 160px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2.5rem 1rem;
+    }
+    .login-card {
+      width: 100%;
+      max-width: 25rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 2.25rem 2rem;
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.4);
+    }
+    @media (max-width: 480px) {
+      .login-card {
+        padding: 1.5rem 1.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Responsive Site Header -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo" aria-label="File hub Homepage">
+        <img src="assets/icons/logo.svg" alt="File hub Logo" width="34" height="34" class="brand-logo-img" />
+        <span>File hub</span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="desktop-nav" aria-label="Main Navigation">
+        <a href="index.html" class="desktop-nav-link">Home</a>
+        <a href="assignment.html" class="desktop-nav-link">Assignments</a>
+        <a href="pyqs.html" class="desktop-nav-link">PYQ's</a>
+        <a href="index.html#contact" class="desktop-nav-link">Contact</a>
+      </nav>
+
+      <!-- Header Actions -->
+      <div class="header-actions">
+        <button type="button" class="header-theme-toggle" id="header-theme-btn" aria-label="Switch Theme">
+          <svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+
+        <div id="header-auth-action">
+          <a href="index.html" class="btn btn-outline" style="font-size: 0.8125rem; padding: 0.35rem 0.875rem; min-height: 38px;">
+            Live Site
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="login-container">
+    <div class="login-card motion-reveal is-revealed">
+      <div style="text-align: center; margin-bottom: 1.75rem;">
+        <img src="assets/icons/logo.svg" alt="File hub Logo" width="48" height="48" style="margin: 0 auto 0.75rem;" />
+        <h1 style="font-size: 1.75rem; margin-bottom: 0.35rem;">Portal Login</h1>
+        <p style="font-size: 0.875rem; color: var(--text-secondary);">
+          Sign in to manage, modify, upload, and delete Assignments &amp; PYQ papers.
+        </p>
+      </div>
+
+      <!-- Logged-in State (If already authenticated) -->
+      <div id="already-logged-in" style="display: none; text-align: center;">
+        <div style="background: var(--bg-elevated); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.25rem;">
+          <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Active Session</div>
+          <div id="user-display-email" style="font-weight: 700; color: var(--text-primary); font-size: 0.95rem; margin-top: 0.25rem; word-break: break-all;"></div>
+          <div style="font-size: 0.8125rem; color: var(--btn-accent-bg); font-weight: 600; margin-top: 0.25rem;">Admin &amp; Manager</div>
+        </div>
+        <a href="dashboard.html" class="btn btn-accent btn-block" style="margin-bottom: 0.75rem;">
+          Go to Management Console
+        </a>
+        <button type="button" id="logout-btn" class="btn btn-outline btn-block">
+          Sign Out
+        </button>
+      </div>
+
+      <!-- Login Form (Only Login, No Register) -->
+      <form id="login-form" style="display: flex; flex-direction: column; gap: 1rem;">
+        <div id="login-error" style="display: none; padding: 0.625rem 0.875rem; border-radius: var(--radius-sm); background: rgba(220, 38, 38, 0.15); border: 1px solid rgba(220, 38, 38, 0.3); color: #f87171; font-size: 0.8125rem;"></div>
+
+        <div>
+          <label for="login-email" style="display: block; font-size: 0.8125rem; font-weight: 600; margin-bottom: 0.375rem;">
+            Gmail Address
+          </label>
+          <input 
+            type="email" 
+            id="login-email" 
+            class="input-control" 
+            value=""
+            placeholder="Enter your email" 
+            required 
+            autocomplete="email" 
+          />
+        </div>
+
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.375rem;">
+            <label for="login-password" style="font-size: 0.8125rem; font-weight: 600;">
+              Password
+            </label>
+            <button type="button" id="toggle-pwd-btn" style="background: none; border: none; font-size: 0.75rem; color: var(--text-muted); cursor: pointer; text-decoration: underline; padding: 0.25rem;">
+              Show
+            </button>
+          </div>
+          <input 
+            type="password" 
+            id="login-password" 
+            class="input-control" 
+            placeholder="Enter password" 
+            required 
+            autocomplete="current-password" 
+          />
+        </div>
+
+        <button type="submit" id="submit-login-btn" class="btn btn-accent btn-block" style="margin-top: 0.5rem;">
+          <span>Sign In to Dashboard</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14"></path>
+            <path d="m12 5 7 7-7 7"></path>
+          </svg>
+        </button>
+
+        <div style="font-size: 0.75rem; color: var(--text-muted); text-align: center; margin-top: 0.5rem; line-height: 1.4;">
+          🔒 Secured with Firebase Authentication. Authorized access only.
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- Clean Footer -->
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <a href="index.html" class="brand-logo" aria-label="File hub">
+        <img src="assets/icons/logo.svg" alt="File hub Logo" width="28" height="28" class="brand-logo-img" />
+        <span>File hub</span>
+      </a>
+      <p class="footer-copyright">
+        &copy; 2026 File hub. Built by Pankaj Patil .
+      </p>
+    </div>
+  </footer>
+
+  <!-- Fixed App-Like Bottom Navigation Bar -->
+  <nav class="bottom-nav-bar" aria-label="Bottom Main Navigation">
+    <div class="bottom-nav-inner">
+      <a href="index.html" class="bottom-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span>Home</span>
+      </a>
+
+      <a href="assignment.html" class="bottom-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        <span>Assignment</span>
+      </a>
+
+      <a href="pyqs.html" class="bottom-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+          <polyline points="10 7 14 11 10 15"></polyline>
+        </svg>
+        <span>PYQ's</span>
+      </a>
+
+      <a href="login.html" id="bottom-login-link" class="bottom-nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/>
+        </svg>
+        <span>Login</span>
+      </a>
+
+      <button type="button" id="bottom-nav-theme" class="bottom-nav-item" aria-label="Switch Theme">
+        <svg class="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <svg class="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <span>Theme</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Scripts -->
+  <script src="js/firebase-config.js"></script>
+  <script>
+    (function() {
+      // Theme Toggle Engine
+      const savedTheme = localStorage.getItem('filehub_theme');
+      if (savedTheme === 'light') document.documentElement.classList.add('light');
+      
+      function toggleTheme() {
+        const isLight = document.documentElement.classList.toggle('light');
+        localStorage.setItem('filehub_theme', isLight ? 'light' : 'dark');
+      }
+
+      const bottomThemeBtn = document.getElementById('bottom-nav-theme');
+      const headerThemeBtn = document.getElementById('header-theme-btn');
+      if (bottomThemeBtn) bottomThemeBtn.addEventListener('click', toggleTheme);
+      if (headerThemeBtn) headerThemeBtn.addEventListener('click', toggleTheme);
+
+      const user = window.FilehubAuth ? window.FilehubAuth.getUser() : null;
+      const form = document.getElementById('login-form');
+      const alreadyLoggedIn = document.getElementById('already-logged-in');
+      const errorBox = document.getElementById('login-error');
+
+      if (user) {
+        form.style.display = 'none';
+        alreadyLoggedIn.style.display = 'block';
+        document.getElementById('user-display-email').textContent = user.email;
+        document.getElementById('logout-btn').addEventListener('click', function() {
+          window.FilehubAuth.logout();
+        });
+      }
+
+      // Password Toggle
+      const pwdInput = document.getElementById('login-password');
+      const toggleBtn = document.getElementById('toggle-pwd-btn');
+      toggleBtn.addEventListener('click', function() {
+        if (pwdInput.type === 'password') {
+          pwdInput.type = 'text';
+          toggleBtn.textContent = 'Hide';
+        } else {
+          pwdInput.type = 'password';
+          toggleBtn.textContent = 'Show';
+        }
+      });
+
+      // Submit Login
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        errorBox.style.display = 'none';
+        const submitBtn = document.getElementById('submit-login-btn');
+        const origText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span>Verifying...</span>';
+
+        const email = document.getElementById('login-email').value.trim();
+        const pwd = pwdInput.value;
+
+        try {
+          const res = await window.FilehubAuth.login(email, pwd);
+          if (res.success) {
+            window.location.href = 'dashboard.html';
+          } else {
+            errorBox.textContent = res.message || 'Authentication failed. Please verify credentials.';
+            errorBox.style.display = 'block';
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = origText;
+          }
+        } catch(err) {
+          errorBox.textContent = 'Network or connection error. Please try again.';
+          errorBox.style.display = 'block';
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = origText;
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
